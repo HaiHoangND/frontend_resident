@@ -22,6 +22,7 @@
     "axios": "^1.4.0",
     "chart.js": "^4.3.0",
     "dayjs": "^1.11.9",
+    "faker": "^6.6.6",
     "firebase": "^10.3.0",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.6",
