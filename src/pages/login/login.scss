@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+
+.loginContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column; /* Hiển thị nội dung dưới nhau */
+  justify-content: center;
+  align-items: center;
+  background-color: #DAFFFB;
+
+  img {
+    width: 300px; /* Đặt kích thước ảnh */
+    margin-bottom: 20px; /* Khoảng cách dưới ảnh */
+  }
+
+  .login-form {
+    max-width: 350px; /* Giới hạn chiều rộng của form */
+    width: 100%;
+
+    .site-form-item-icon {
+      font-size: 16px; /* Tăng kích thước biểu tượng */
+    }
+
+    .login-form-button {
+      width: 100%; /* Độ rộng của nút là 100% để điều chỉnh với form */
+      font-size: 16px; /* Tăng kích thước chữ trong nút */
+      margin-top: 10px; /* Khoảng cách từ nút đến các thành phần trên */
+    }
+
+    .login-form-forgot {
+      float: right; /* Đưa "Forgot password" sang bên phải */
+    }
+  }
+}

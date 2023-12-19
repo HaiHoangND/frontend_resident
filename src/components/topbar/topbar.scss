@@ -1,10 +1,15 @@
-.topbarContainer{
-    background-color: white;
+.topbarContainer {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #dafffb;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  .person {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    span{
-        font-size: 20px;
-    }
+    padding: 7.5px 20px;
+    font-size: 20px;
+  }
 }

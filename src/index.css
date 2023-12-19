@@ -1,6 +1,6 @@
 :root {
-  font-family: 'Roboto', sans-serif;
-  
+  font-family: "Roboto", sans-serif;
+
   /* color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
   background-color: rgb(240, 241, 241);
@@ -12,7 +12,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
- a {
+a {
   /* font-weight: 500; */
   color: inherit;
   text-decoration: inherit;
@@ -27,12 +27,12 @@ body {
   color: black;
 }
 
-.bodyContainer{
+.bodyContainer {
   display: flex;
   background-color: #f0f1f1;
 }
-.contentContainer{
-  flex:6;
+.contentContainer {
+  flex: 6;
 }
 
 @tailwind base;

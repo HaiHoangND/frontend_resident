@@ -1,130 +1,97 @@
-import { Apartment, DoorSliding, LocalPolice, NotificationsActive, RoomService, Input, QrCode } from "@mui/icons-material";
-import React from "react";
-import "./sidebar.scss"
+import React, { useState } from "react";
+import "./sidebar.scss";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  HomeOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
+import { Button, Menu } from "antd";
+import {
+  Apartment,
+  CircleNotifications,
+  DoorSliding,
+  ExitToApp,
+  Hearing,
+  QrCode,
+  RoomService,
+  Security,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
+const items = [
+  getItem("Trang chủ", "1", <HomeOutlined style={{ fontSize: 20 }} />),
+  getItem(
+    "Dân cư",
+    "/member",
+    <UsergroupAddOutlined style={{ fontSize: 20 }} />
+  ),
+  getItem("Bảo vệ", "/gateKeeper", <Security style={{ fontSize: 20 }} />),
+  getItem("Tòa nhà", "/building", <Apartment style={{ fontSize: 20 }} />),
+  getItem("Danh sách cổng", "/gate", <DoorSliding style={{ fontSize: 20 }} />),
+  getItem("Dịch vụ", "6", <RoomService style={{ fontSize: 20 }} />),
+  getItem("Thông báo", "7", <CircleNotifications style={{ fontSize: 20 }} />),
+  getItem(
+    "Kiểm tra thông tin",
+    "/check-info",
+    <QrCode style={{ fontSize: 20 }} />
+  ),
+  getItem(
+    "Quản lý ra vào",
+    "/entry-exit",
+    <ExitToApp style={{ fontSize: 20 }} />
+  ),
+  getItem("Vấn đề", "9", <Hearing style={{ fontSize: 20 }} />),
+];
 
 export const Sidebar = () => {
-  const pathname = useLocation().pathname.split("/");
+  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+  const onClick = (e) => {
+    navigate(e.key);
+  };
   return (
-    <div className="sidebarContainer">
-      <div className="soictLogoWrapper">
-        <img
-          src="https://soict.hust.edu.vn/wp-content/uploads/news_logo_soict_25_years.png"
-          alt=""
-        />
-      </div>
-      <hr />
-      <div className="sidebarItemsWrapper">
-        <Link to="/admin">
-          <div
-            className={
-              pathname[1] === "admin" && !pathname[2]
-                ? "sidebarItem selected"
-                : "sidebarItem"
-            }
-          >
-            <Home /> Trang chủ
-          </div>
-        </Link>
-        <Link to="/member">
-              <div
-                className={
-                  pathname[1] === "member"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <Group /> Dân cư
-              </div>
-        </Link>
-        <Link to="/gatekeeper">
-              <div
-                className={
-                  pathname[1] === "gatekeeper"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <LocalPolice /> Bảo vệ
-              </div>
-        </Link>
-        <Link to="/building">
-              <div
-                className={
-                  pathname[1] === "building" && !pathname[2]
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <Apartment /> Tòa nhà
-              </div>
-        </Link>
-        <Link to="/gate">
-              <div
-                className={
-                  pathname[1] === "gate"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <DoorSliding /> Danh sách cổng
-              </div>
-        </Link>
-        <Link to="/service">
-              <div
-                className={
-                  pathname[1] === "service"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <RoomService /> Dịch vụ
-              </div>
-        </Link>
-        <Link to="/notification">
-              <div
-                className={
-                  pathname[1] === "notification"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <NotificationsActive /> Thông báo
-              </div>
-        </Link>
-        <Link to="/visitor">
-              <div
-                className={
-                  pathname[1] === "visitor"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <Input /> Quản lý ra vào
-              </div>
-        </Link>
-        <Link to="/complaint">
-              <div
-                className={
-                  pathname[1] === "complaint"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <SupportAgent /> Vấn đề
-              </div>
-        </Link>
-        <Link to="/qrcode">
-              <div
-                className={
-                  pathname[1] === "qrcode"
-                    ? "sidebarItem selected"
-                    : "sidebarItem"
-                }
-              >
-                <QrCode /> Kiểm tra thông tin
-              </div>
-        </Link>
-      </div>
+    <div
+      style={{
+        width: 300,
+        backgroundColor: "#DAFFFB",
+        height: "100vh",
+        position: "fixed",
+      }}
+    >
+      <Button
+        type="primary"
+        onClick={toggleCollapsed}
+        style={{
+          marginBottom: 16,
+          backgroundColor: "#64CCC5",
+          height: 50,
+          width: 50,
+        }}
+      >
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </Button>
+      <Menu
+        defaultSelectedKeys={[window.location.pathname]}
+        mode="inline"
+        theme="dark"
+        inlineCollapsed={collapsed}
+        items={items}
+        style={{ height: "91.1vh", width: 300, backgroundColor: "#04364A" }}
+        onClick={onClick}
+        selectedKeys={[window.location.pathname]}
+      />
     </div>
   );
 };

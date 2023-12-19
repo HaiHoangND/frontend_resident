@@ -1,0 +1,32 @@
+/* Trong file CheckInformation.scss */
+.checkInfoContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.qrCode {
+  width: 45%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+  border-radius: 10px;
+  width: 10px;
+  height: 100%;
+  background-color: #176B87;
+}
+
+.information {
+  height: 92%;
+  width: 45%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

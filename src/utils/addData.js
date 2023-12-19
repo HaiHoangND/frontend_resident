@@ -420,8 +420,9 @@ const addGates = async ()=>{
 
 const addMembers = async()=>{
     for(const member of memberUsers){
-        await axios.post("http://localhost:8080/api/user",{
+        await axios.post("http://localhost:8080/api/register",{
             name: member.name,
+            password: "123",
             phone: generatePhoneNumber(),
             status: true,
             gender: member.gender,
@@ -448,8 +449,9 @@ const addGateKeepers = async()=>{
     for (let i = 2; i <= 7; i++) {
         const membersToAdd = gateKeepers.slice((i - 2) * 3, (i - 1) * 3);
         for (const member of membersToAdd) {
-            await axios.post("http://localhost:8080/api/user", {
+            await axios.post("http://localhost:8080/api/register", {
                 name: member.name,
+                password: "123",
                 phone: generatePhoneNumber(),
                 status: true,
                 gender: member.gender,

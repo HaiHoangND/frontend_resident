@@ -24,6 +24,7 @@
     "dayjs": "^1.11.9",
     "faker": "^6.6.6",
     "firebase": "^10.3.0",
+    "html5-qrcode": "^2.3.8",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.6",
     "react-chartjs-2": "^5.2.0",
