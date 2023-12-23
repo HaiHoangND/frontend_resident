@@ -182,6 +182,7 @@ export const CheckInformation = ({ isAllowed }) => {
         return message.error(res.data.message);
       }
     } catch (error) {
+      message.error("Mã QR không hợp lệ");
       console.log(error);
     }
   };

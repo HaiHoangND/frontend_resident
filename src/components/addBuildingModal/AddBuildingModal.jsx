@@ -1,31 +1,49 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button } from "antd";
+import { Modal, Form, Input, Select, Button, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { userRequest } from "../../requestMethods";
 
 const AddBuildingModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     name: "",
     position: "",
   });
+
+  const addNewBuilding = async (values) => {
+    try {
+      const { name, position } = values;
+      const res = await userRequest.post("/building", {
+        name: name,
+        position: position,
+      });
+      if (res.data.type === "success") {
+        message.success("Thêm tòa nhà thành công");
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (e) {
+      console.log(error);
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    // Thực hiện xử lý cập nhật dữ liệu ở đây (formData chứa dữ liệu mới)
+    form.resetFields();
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalOpen(false);
   };
 
   const onFinish = (values) => {
-    // Lấy dữ liệu từ form và cập nhật vào formData
-    setFormData(values.building);
-    handleOk();
+    addNewBuilding(values.building);
   };
 
   return (
@@ -45,6 +63,7 @@ const AddBuildingModal = () => {
         onCancel={handleCancel}
       >
         <Form
+          form={form}
           name="nest-messages"
           onFinish={onFinish}
           initialValues={{ building: formData }}
@@ -71,6 +90,21 @@ const AddBuildingModal = () => {
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{
+                fontSize: 20,
+                height: 45,
+                display: "block",
+                margin: "auto",
+              }}
+            >
+              Thêm tòa nhà
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

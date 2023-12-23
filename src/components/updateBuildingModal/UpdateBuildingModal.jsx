@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Button, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { userRequest } from "../../requestMethods";
 
 const UpdateBuildingModal = ({ building }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -8,6 +9,23 @@ const UpdateBuildingModal = ({ building }) => {
     name: building.name,
     position: building.position,
   });
+
+  const updateBuilding = async (values) => {
+    try {
+      const { name, position } = values;
+      const res = await userRequest.put(`/building/${building.id}`, {
+        name: name,
+        position: position,
+      });
+      if (res.data.type === "success") {
+        message.success("Cập nhật tòa nhà thành công");
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -23,9 +41,8 @@ const UpdateBuildingModal = ({ building }) => {
   };
 
   const onFinish = (values) => {
-    // Lấy dữ liệu từ form và cập nhật vào formData
+    updateBuilding(values.building);
     setFormData(values.building);
-    handleOk();
   };
 
   return (
@@ -64,6 +81,21 @@ const UpdateBuildingModal = ({ building }) => {
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{
+                fontSize: 20,
+                height: 45,
+                display: "block",
+                margin: "auto",
+              }}
+            >
+              Cập nhật tòa nhà
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

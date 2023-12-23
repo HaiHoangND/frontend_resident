@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag } from "antd";
-import {List } from 'antd';
+import { List } from "antd";
 import { publicRequest, userRequest } from "../../requestMethods";
 import { useNavigate } from "react-router-dom";
 import UpdateMemberModal from "../updateMemberModal/UpdateMemberModal";

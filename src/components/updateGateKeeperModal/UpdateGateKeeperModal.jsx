@@ -1,23 +1,57 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, Select, Button, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { userRequest } from "../../requestMethods";
 
 const UpdateGateKeeperModal = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [gate, setGate] = useState(null);
   const [formData, setFormData] = useState({
     name: user.name,
     gender: user.gender,
     phone: user.phone,
-    gate: user.gate.name,
-    status: user.status ? "true" : "false",
+    gate: user.gate.id,
+    status: user.status,
   });
+
+  const getGates = async () => {
+    try {
+      const res = await userRequest.get("/gate/all");
+      setGate(res.data.data);
+    } catch (e) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getGates();
+  }, []);
+
+  const updateUser = async (values) => {
+    try {
+      const { name, gender, phone, gate, status } = values;
+      const res = await userRequest.put(`/user/${user.id}`, {
+        name: name,
+        phone: phone,
+        status: status,
+        gender: gender,
+        role: "GATEKEEPER",
+        gateId: gate,
+      });
+      if (res.data.type === "success") {
+        message.success("Cập nhật bảo vệ thành công");
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    // Thực hiện xử lý cập nhật dữ liệu ở đây (formData chứa dữ liệu mới)
     setIsModalOpen(false);
   };
 
@@ -26,9 +60,8 @@ const UpdateGateKeeperModal = ({ user }) => {
   };
 
   const onFinish = (values) => {
-    // Lấy dữ liệu từ form và cập nhật vào formData
+    updateUser(values.user);
     setFormData(values.user);
-    handleOk();
   };
 
   return (
@@ -76,18 +109,34 @@ const UpdateGateKeeperModal = ({ user }) => {
           </Form.Item>
           <Form.Item name={["user", "gate"]} label="Tên cổng">
             <Select>
-              <Select.Option value="Cổng chính">Cổng chính</Select.Option>
-              <Select.Option value="Cổng ra số 1">Cổng ra số 1</Select.Option>
-              <Select.Option value="Cổng phụ tầng 2">
-                Cổng phụ tầng 2
-              </Select.Option>
+              {gate &&
+                gate.map((gateItem) => (
+                  <Select.Option key={gateItem.id} value={gateItem.id}>
+                    {gateItem.name}
+                  </Select.Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item name={["user", "status"]} label="Trạng thái">
-            <Select defaultValue={user.status ? "true" : "false"}>
-              <Select.Option value="true">Đang làm việc</Select.Option>
-              <Select.Option value="false">Đã nghỉ việc</Select.Option>
+            <Select defaultValue={user.status}>
+              <Select.Option value={true}>Đang làm việc</Select.Option>
+              <Select.Option value={false}>Đã nghỉ việc</Select.Option>
             </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{
+                fontSize: 20,
+                height: 45,
+                display: "block",
+                margin: "auto",
+              }}
+            >
+              Cập nhật bảo vệ
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

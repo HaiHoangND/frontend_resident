@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, Select, Button, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { publicRequest, userRequest } from "../../requestMethods";
 
 const AddGateKeeperModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [gate, setGate] = useState(null);
+  const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -12,23 +15,68 @@ const AddGateKeeperModal = () => {
     status: "",
   });
 
+  const getGates = async () => {
+    try {
+      const res = await userRequest.get("/gate/all");
+      setGate(res.data.data);
+    } catch (e) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getGates();
+  }, []);
+
+  const register = async (name, gender, phone, gateId) => {
+    try {
+      const res = await publicRequest.post("/register", {
+        name: name,
+        password: "123",
+        phone: phone,
+        status: true,
+        gender: gender,
+        role: "GATEKEEPER",
+        gateId: gateId,
+      });
+      return res;
+    } catch (e) {
+      console.log(error);
+    }
+  };
+
+  const addNewUser = async (values) => {
+    try {
+      const { name, gender, phone, gate } = values;
+      // Nếu không có phòng, thực hiện đăng ký mà không cần thêm vào phòng
+      const res = await register(name, gender, phone, gate);
+
+      if (res.data.type === "success") {
+        message.success("Thêm bảo vệ thành công");
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    // Thực hiện xử lý cập nhật dữ liệu ở đây (formData chứa dữ liệu mới)
+    form.resetFields();
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalOpen(false);
   };
 
   const onFinish = (values) => {
-    // Lấy dữ liệu từ form và cập nhật vào formData
-    setFormData(values.user);
-    handleOk();
+    console.log(values.user);
+    addNewUser(values.user);
   };
 
   return (
@@ -48,6 +96,7 @@ const AddGateKeeperModal = () => {
         onCancel={handleCancel}
       >
         <Form
+          form={form}
           name="nest-messages"
           onFinish={onFinish}
           initialValues={{ user: formData }}
@@ -83,12 +132,28 @@ const AddGateKeeperModal = () => {
           </Form.Item>
           <Form.Item name={["user", "gate"]} label="Tên cổng">
             <Select>
-              <Select.Option value="Cổng chính">Cổng chính</Select.Option>
-              <Select.Option value="Cổng ra số 1">Cổng ra số 1</Select.Option>
-              <Select.Option value="Cổng phụ tầng 2">
-                Cổng phụ tầng 2
-              </Select.Option>
+              {gate &&
+                gate.map((gateItem) => (
+                  <Select.Option key={gateItem.id} value={gateItem.id}>
+                    {gateItem.name}
+                  </Select.Option>
+                ))}
             </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{
+                fontSize: 20,
+                height: 45,
+                display: "block",
+                margin: "auto",
+              }}
+            >
+              Thêm bảo vệ
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

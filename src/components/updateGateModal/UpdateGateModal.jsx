@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, Button, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { userRequest } from "../../requestMethods";
 
 const UpdateGateModal = ({ gate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -8,6 +9,23 @@ const UpdateGateModal = ({ gate }) => {
     name: gate.name,
     category: gate.category,
   });
+
+  const updateGate = async (values) => {
+    try {
+      const { name, category } = values;
+      const res = await userRequest.put(`/gate/${gate.id}`, {
+        name: name,
+        category: category,
+      });
+      if (res.data.type === "success") {
+        message.success("Cập nhật cổng thành công");
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -23,9 +41,8 @@ const UpdateGateModal = ({ gate }) => {
   };
 
   const onFinish = (values) => {
-    // Lấy dữ liệu từ form và cập nhật vào formData
+    updateGate(values.gate);
     setFormData(values.gate);
-    handleOk();
   };
 
   return (
@@ -59,6 +76,21 @@ const UpdateGateModal = ({ gate }) => {
               <Select.Option value="IN">Vào</Select.Option>
               <Select.Option value="OUT">Ra</Select.Option>
             </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{
+                fontSize: 20,
+                height: 45,
+                display: "block",
+                margin: "auto",
+              }}
+            >
+              Cập nhật cổng
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
