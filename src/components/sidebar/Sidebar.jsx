@@ -51,7 +51,7 @@ export const Sidebar = () => {
     getItem("Bảo vệ", "/gateKeeper", <Security style={{ fontSize: 20 }} />),
     getItem("Tòa nhà", "/building", <Apartment style={{ fontSize: 20 }} />),
     getItem(
-      "Danh sách cổng",
+      "Cổng",
       "/gate",
       <DoorSliding style={{ fontSize: 20 }} />
     ),

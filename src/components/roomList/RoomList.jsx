@@ -14,7 +14,7 @@ export const RoomList = () => {
   const [roomData, setRoomData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1);
-  const pageSize = 10;
+  const pageSize = 9;
   //   const [isLoading, setIsLoading] = useState(true);
   const getRooms = async (currentPage) => {
     try {

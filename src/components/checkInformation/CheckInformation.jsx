@@ -179,7 +179,7 @@ export const CheckInformation = ({ isAllowed }) => {
         }
         return true;
       } else {
-        return message.error(res.data.message);
+        return message.error("Mã QR không hợp lệ");
       }
     } catch (error) {
       message.error("Mã QR không hợp lệ");
